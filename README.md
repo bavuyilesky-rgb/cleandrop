@@ -39,4 +39,4 @@ service cloud.firestore {
     }
   }
 }
-📜 Academic DeclarationSubmitted in partial fulfilment of the requirements for Application Technology IV (APT 41P2) at Walter Sisulu University (2026).
+Academic DeclarationSubmitted in partial fulfilment of the requirements for Application Technology IV (APT 41P2) at Walter Sisulu University (2026).
