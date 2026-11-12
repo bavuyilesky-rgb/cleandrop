@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "117953933188",
+    "project_id": "clean-drop-1b735",
+    "storage_bucket": "clean-drop-1b735.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117953933188:android:6e16d02e46c6f93ad577d1",
+        "android_client_info": {
+          "package_name": "com.clean_drop.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApI3EfoCXNd4idhbXITHCDFTYFG46wQ98"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
