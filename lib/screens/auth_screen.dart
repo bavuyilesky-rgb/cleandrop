@@ -90,6 +90,89 @@ class _CleanDropAuthScreenState extends State<CleanDropAuthScreen> {
     }
   }
 
+  Future<void> _forgotPassword() async {
+    final resetEmailCtrl = TextEditingController(text: _emailCtrl.text.trim());
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          title: const Text('Reset Password',
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Enter your account email address. We will send you a password reset link.',
+                style: TextStyle(fontSize: 13, color: Colors.black87),
+              ),
+              const SizedBox(height: 14),
+              TextField(
+                controller: resetEmailCtrl,
+                keyboardType: TextInputType.emailAddress,
+                style: const TextStyle(color: Colors.black87),
+                decoration: const InputDecoration(
+                  labelText: 'Email Address',
+                  prefixIcon: Icon(Icons.mail_outline),
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.deepEmerald,
+                foregroundColor: Colors.white,
+              ),
+              onPressed: () => Navigator.pop(ctx, true),
+              child: const Text('Send Reset Link'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed == true) {
+      final email = resetEmailCtrl.text.trim();
+      if (email.isEmpty) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Please enter a valid email address.')),
+          );
+        }
+        return;
+      }
+      try {
+        await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                  'Password reset link sent to $email. Please check your inbox.'),
+              backgroundColor: AppColors.deepEmerald,
+            ),
+          );
+        }
+      } on FirebaseAuthException catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content:
+                  Text(e.message ?? 'Failed to send password reset email.'),
+              backgroundColor: Colors.red.shade800,
+            ),
+          );
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -257,7 +340,22 @@ class _CleanDropAuthScreenState extends State<CleanDropAuthScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      if (_isLogin)
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: _forgotPassword,
+                            child: const Text(
+                              'Forgot Password?',
+                              style: TextStyle(
+                                color: AppColors.deepEmerald,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ),
+                      const SizedBox(height: 16),
                       SizedBox(
                         width: double.infinity,
                         height: 52,
